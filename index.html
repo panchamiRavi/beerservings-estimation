@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Alcohol Predictor</title>
+</head>
+<body>
+    <h2>Alcohol Consumption Predictor</h2>
+    <form method="POST" action="/predict">
+        <label>Country</label>
+        <select name="country">
+            {% for c in countries %}
+                <option>{{ c }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <label>Continent</label>
+        <select name="continent">
+            {% for c in continents %}
+                <option>{{ c }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <label>Beer Servings:</label><input type="number" name="beer"><br><br>
+        <label>Spirit Servings:</label><input type="number" name="spirit"><br><br>
+        <label>Wine Servings:</label><input type="number" name="wine"><br><br>
+
+        <input type="submit" value="Predict">
+    </form>
+
+    {% if prediction_text %}
+        <h3>{{ prediction_text }}</h3>
+    {% endif %}
+</body>
+</html>
