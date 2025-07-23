@@ -3,6 +3,8 @@ import streamlit as st
 import numpy as np
 from os import path
 import os
+import joblib
+import pandas as pd
 # Title of the app
 st.title("🍺 Beer Servings Estimation App")
 
@@ -17,7 +19,7 @@ print(model_path)
 
 try:
     with open(model_path, "rb") as f:
-        LR_model = pickle.load(f)
+        LR_model = joblib.load(f)
 except FileNotFoundError:
     st.error(f"Model file not found at: {model_path}")
     st.stop()
@@ -35,17 +37,21 @@ continent = st.selectbox(
     "Select a continent",
     ["Europe", "North America", "Asia", "South America", "Africa", "Oceania"],
 )
-
 beer = st.number_input("Beer servings", min_value=0)
 spirit = st.number_input("Spirit servings", min_value=0)
 wine = st.number_input("Wine servings", min_value=0)
 
-# Prediction
 if st.button("Predict"):
-    features = np.array([[beer, spirit, wine]])
-    
+    input_df = pd.DataFrame([{
+        "country": country,
+        "beer_servings": beer,
+        "spirit_servings": spirit,
+        "wine_servings": wine,
+        "continent": continent
+    }])
+
     try:
-        prediction = LR_model.predict(features)
+        prediction = LR_model.predict(input_df)
         st.markdown(f"### 🧪 Estimated total liters of pure alcohol: **{round(prediction[0], 2)}**")
     except Exception as e:
         st.error(f"Prediction failed: {e}")
