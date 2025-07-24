@@ -1,8 +1,7 @@
-pickle
+
 numpy 
 streamlit
 joblib
 scikit-learn
 pandas
-numpy
 matplotlib
